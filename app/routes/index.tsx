@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { Counter } from "~/components/counter";
 import type { Crash } from "../models/crash.server";
 import * as crashes from "../models/crash.server";
+import * as utils from "../utils";
 
 type LoaderData = { crash: Crash | null };
 
@@ -17,13 +18,15 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   const {crash} = useLoaderData<LoaderData>();
 
+  const daysSinceCrash = utils.daysBetween(new Date(), new Date(crash.createdAt))
+
   return (
     <main className="relative min-h-screen bg-white flex flex-col items-center justify-center">
       <div className="flex flex-col items-center space-y-4">
         {crash ? (
-          <Counter date={new Date(crash.createdAt)} />
+          <Counter daysAgo={daysSinceCrash} />
         ) : (<p>None</p>)}
-        <p className="text-3xl">days since last downtime</p>
+        <p className="text-3xl">{utils.pluralise("day", daysSinceCrash)} since last downtime</p>
       </div>
 
       <form method="post" action="/new" className="absolute top-1/2 left-1/2">

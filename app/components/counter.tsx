@@ -1,10 +1,10 @@
 type Props = {
-  date: Date;
+  daysAgo: number;
 }
 
-export const Counter = ({date}: Props) => {
-  let daysSinceCrash = Math.floor((new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+export const Counter = ({daysAgo}: Props) => {
 
+  let daysSinceCrash = daysAgo;
   let digits: number[] = [];
   do {
     digits = [daysSinceCrash % 10, ...digits];
