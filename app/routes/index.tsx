@@ -18,7 +18,10 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   const {crash} = useLoaderData<LoaderData>();
 
-  const daysSinceCrash = utils.daysBetween(new Date(), new Date(crash.createdAt))
+  let daysSinceCrash = 0;
+  if (crash) {
+    daysSinceCrash = utils.daysBetween(new Date(), new Date(crash.createdAt))
+  }
 
   return (
     <main className="relative min-h-screen bg-white flex flex-col items-center justify-center">

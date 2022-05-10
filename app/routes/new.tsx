@@ -1,4 +1,5 @@
-import { ActionFunction, redirect } from "@remix-run/node";
+import type {ActionFunction} from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import * as crashes from "../models/crash.server";
 
 export const action: ActionFunction = async ({
