@@ -18,18 +18,23 @@ export const loader: LoaderFunction = async () => {
 export default function Index() {
   const {crash} = useLoaderData<LoaderData>();
 
-  let daysSinceCrash = 0;
+  let sinceLastCrash = 0;
+  let unit = "day";
   if (crash) {
-    daysSinceCrash = utils.daysBetween(new Date(), new Date(crash.createdAt))
+    sinceLastCrash = utils.daysBetween(new Date(), new Date(crash.createdAt))
+    if (sinceLastCrash == 0) {
+      sinceLastCrash = utils.hoursBetween(new Date(), new Date(crash.createdAt))
+      unit = "hour";
+    }
   }
 
   return (
     <main className="relative min-h-screen bg-white flex flex-col items-center justify-center">
       <div className="flex flex-col items-center space-y-4">
         {crash ? (
-          <Counter daysAgo={daysSinceCrash} />
+          <Counter daysAgo={sinceLastCrash} />
         ) : (<p>None</p>)}
-        <p className="text-3xl">{utils.pluralise("day", daysSinceCrash)} since last downtime</p>
+        <p className="text-3xl">{utils.pluralise(unit, sinceLastCrash)} since last downtime</p>
       </div>
 
       <form method="post" action="/new" className="absolute top-1/2 left-1/2">
